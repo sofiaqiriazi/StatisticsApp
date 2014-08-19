@@ -159,6 +159,7 @@ def slotsTimes():
         slots = Slot_Conf.view('statistics/Slots',key=today)
 
         for s in slots:
+	        	
                 data[s.slot]={}
                 for p in s.platforms:
                         data[s.slot][p]={}
@@ -174,6 +175,46 @@ def slotsTimes():
         data = json.dumps(data)
 
         return data
+
+@app.route('/slotResults/<slot_name>',methods = ['GET'])
+def slotResult(slot_name):
+
+        slots = Slot_Conf.view('statistics/Slots',key=today)
+        projects = ProjNames.view('statistics/projectsInSlot',key=[today,slot_name])
+        results = Results.view('statistics/slotsResults',key=[today,slot_name])
+
+        platforms = []
+        for s in slots:
+                if s.slot==slot_name:
+                        platforms = s.platforms
+
+	for p in projects:
+		names = p.names
+
+        dopedict = {}
+        for p in platforms:
+                dopedict[p] = {}
+                dopedict[p]['tests-result'] = []
+                dopedict[p]['build-result'] = []
+
+	data = {}
+
+	for n in names:
+		data[n] = {}
+		for p in platforms:
+			data[n][p]={}
+			data[n][p]['tests-result']={}
+			data[n][p]['build-result']={}
+		
+		
+        for r in results:
+		data[r.project][r.platform]['tests-result']={"started":r.started,"completed":r.completed}
+		data[r.project][r.platform]['build-result']={"started":r.started,"completed":r.completed}
+		
+	
+        data = json.dumps(data)
+	return data
+
 
 @app.route('/slotsResults/<slot_name>',methods = ['GET'])
 def slotsResults(slot_name):

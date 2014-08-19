@@ -68,6 +68,7 @@
 	width: 50%;
 	height: 400px;
 	margin:auto;
+	overflow:hidden;
 }
 
 #weekchart div {

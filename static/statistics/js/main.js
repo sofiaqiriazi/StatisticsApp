@@ -301,6 +301,9 @@ function makeSlotPieChart(slot){
 			options['width'] = 300;
 			options['height'] = 300;
 			options['tooltip'] = { trigger: 'selection' };
+			options['label'] = 'none';
+			options['pieSliceText']='label';
+	
 
 			options['enableInteractivity'] = false;
 			var chartdiv = $('#'+data[0].slot)
@@ -351,10 +354,13 @@ function makeSlotPieChart(slot){
 
                         	switch (selection[0].row) {
                                 	case 0:
+						loadTimelineofProjects(data[0].slot,data[0].finished);	
                                         	break;
                                 	case 1:
+						loadTimelineofProjects(data[0].slot,data[0].unfinished);
                                         	break;
                                 	case 2:
+						loadTimelineofProjects(data[0].slot,data[0].unstarted);
                                         	break;
                                 	}
 
@@ -373,11 +379,82 @@ function makeSlotPieChart(slot){
 
 }
 
+function loadTimelineofProjects(slot,projects){
+	
+	$('.slotfocus .columnchart').empty();
+	$('.slotfocus').append('<div id='+slot + '-linechart'+' class="columnchart"></div>');
+	$.get('slotResults/'+slot,function(data){
+		
+		data = jQuery.parseJSON(data);
+		console.log(data);
+		console.log(projects);
+		var temp;
+		results = [];
+		for (var d in projects){
+			var x = projects[d];
+				for (var p in data[x]){
+					console.log(data[x][p]);
+					for (var set in data[x][p]){
+						if(data[x][p][set]["started"]){
+						startdate = data[x][p][set]["started"].split('T')[0];
+						enddate = data[x][p][set]["completed"].split('T')[0];
+						starttime = data[x][p][set]["started"].split('T')[1];
+						endtime = data[x][p][set]["completed"].split('T')[1];
+						
+						temp = [x,set,new Date(startdate.split('-')[0],startdate.split('-')[1],startdate.split('-')[2],
+									 starttime.split(':')[0],starttime.split(':')[1],starttime.split(':')[2]),
+								new Date(enddate.split('-')[0],enddate.split('-')[1],enddate.split('-')[2],
+									 endtime.split(':')[0],endtime.split(':')[1],endtime.split(':')[2])];
+
+						results.push(temp);
+						
+						}
+						else{
+						temp = [x,set,new Date(0,0,0,0,0,0),
+								new Date(0,0,0,0,0,0)];
+
+						results.push(temp);
+
+						}
+					}
+				}
+		}
+					
+
+		google.load("visualization", "1", {packages:["corechart"],callback: drawProjectsChart});
+
+
+
+	function drawProjectsChart(){
+		
+		var container = document.getElementById(slot+'-linechart');
+		var chart = new google.visualization.Timeline(container);
+	
+		var dataTable = new google.visualization.DataTable();
+		
+	  	dataTable.addColumn({ type: 'string', id: 'Project' });
+		dataTable.addColumn({ type: 'string', id: 'type' });
+		dataTable.addColumn({ type: 'date', id: 'Start' });
+		dataTable.addColumn({ type: 'date', id: 'End' });
+		dataTable.addRows(results);
+	
+		var options={
+			width:400,	
+		};
+	
+		chart.draw(dataTable,options);
+	}
+
+	});
+	
+}
+
+
 function displayMoreInfo(data){
 
 	for (var i in data){
 		google.load("visualization", "1.0", {packages:["corechart"]});
-		makeSlotPieChart(data[i]);	
+		makeSlotPieChart(data[i]);
 	}
 	
 }
@@ -452,6 +529,8 @@ function makestaff(){
 
 			var options = {};
 			options['title'] = 'TOTAL OF SLOTS : '+ data[0].total;
+			options['label'] = 'none';
+			options['pieSliceText']='label';
 			options['width'] = 400;
 			options['height'] = 400;
 			options['tooltip'] = { trigger: 'selection' };

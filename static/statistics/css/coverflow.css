@@ -6,6 +6,7 @@
     width:80%;
     position: relative;
 }
+
 .frame {
     height: 300px; 
    line-height: 2px;
@@ -92,6 +93,14 @@
 .prev img:hover{
 	margin-right:8px;
 }
+
+.trialwrap {
+    float:left;
+    width:80%;
+    position: relative;
+    margin:auto;
+}
+
 
 
 .oneperframe {
