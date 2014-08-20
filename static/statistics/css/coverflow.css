@@ -148,12 +148,39 @@
     transform: rotateY(-60deg) scale(0.9);
 }
 
+.subwrap {
+    float:left;
+    width:40%;
+    position: relative;
+}
+
 .subframe {
-  width: 400px;
-  margin: 2px;
+  float:left;
+  width: 100%;
   height: 200px;
   overflow: hidden;
 }
+
+.subscrollbar {
+    background: none repeat scroll 0 0 #CCCCCC;
+    height: 5px;
+    line-height: 0;
+    margin: 0 0 1em;
+}
+.subscrollbar .subhandle {
+    background: none repeat scroll 0 0 #2E5CB8;
+    cursor: pointer;
+    height: 100%;
+    width: 20%;
+}
+.subscrollbar .subhandle .submousearea {
+    height: 20px;
+    left: 0;
+    position: absolute;
+    top: -9px;
+    width: 100%;
+}
+
 .comparison {
   list-style: none;
   margin: 0;

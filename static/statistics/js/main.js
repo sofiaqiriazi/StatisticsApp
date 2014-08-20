@@ -19,18 +19,24 @@ function createComparisonFlow(slot){
 
 	$('#'+slot+'-subframe').sly('destroy');
 	$('#'+slot+'-subframe').sly({
-		horizontal: 1,
-		itemNav: 'basic',
-		smart:1,
-		activateOn:'click',
-		mouseDragging: 1,
-		touchDragging: 1,
-		scrollBy: 1,
-		prev: 'li',
-		next: 'li',
-		dragging: 1,
-		speed: 300,
-		keyboardNavBy: "items",
+
+               horizontal: 1,
+                itemNav: 'forceCentered',
+                smart: 1,
+                activateOn: 'click',
+                mouseDragging: 1,
+                touchDragging: 1,
+                releaseSwing: 1,
+                startAt: 0,
+                scrollBar: $('.subwrap').find('.subscrollbar'),
+                scrollBy: 1,
+                speed: 300,
+                elasticBounds: 1,
+                easing: 'easeOutExpo',
+                dragHandle: 1,
+                dynamicHandle: 1,
+                clickBar: 1,
+
 	});
 
 	$('#'+slot+'-subframe').sly('reload');
@@ -128,8 +134,15 @@ function loadProjectsProgress(id){
 function appendTimeInfoTable(slot){
 
 			domain = $('#'+slot+'-focuschart');	
-			$('.slotfocus').append('<div id='+ slot + "-subframe" +' class="subframe"><ul class="comparison">'+
-					'</ul></div>');
+			$('.slotfocus').append('<div class="subwrap">'+
+							'<div class="subscrollbar">'+
+								'<div class="subhandle" style=" width: 190px;">'+
+									'<div class="submousearea"></div>'+
+								'</div>'+
+							'</div>'+
+							'<div id='+ slot + "-subframe" +' class="subframe">'+
+								'<ul class="comparison">'+
+							'</ul></div></div>');
 
 		
 
@@ -140,9 +153,7 @@ function appendTimeInfoTable(slot){
 				data = jQuery.parseJSON(data);
 				for (var platform in data[slot]){
 					var starttime = data[slot][platform]['start'];
-					console.log(starttime);
 					var endtime = data[slot][platform]['end'];
-					console.log(endtime);
 					var avgcompletion = data[slot][platform]['avgcompletion'];
 
 					var secsnow = now.getHours()*3600 + now.getMinutes()*60+now.getSeconds();
@@ -165,11 +176,7 @@ function appendTimeInfoTable(slot){
 			row = $('<tr></tr>').addClass('bar').text(' Actual End Time: '+ endtime.split('.')[0]); 
 			row.append('<td><img src="https://cdn4.iconfinder.com/data/icons/Once_by_Delacro/Clock.png"  style="width:40%;" /></td>');
 			table.append(row);
-			console.log(platform);	
-			console.log(avgcompletion);
-			console.log(secsstarted);
 			var expected = parseInt(avgcompletion) + parseInt(secsstarted);
-			console.log(expected);
 			row = $('<tr></tr>').addClass('bar').text('Average Time: '+ FloattoTime(expected));
 
 			row.append('<td><img src="https://cdn4.iconfinder.com/data/icons/Once_by_Delacro/Clock.png"  style="width:40%;" /></td>');
@@ -316,20 +323,18 @@ function makeSlotPieChart(slot){
 			$('#'+slot).click(function(){
 					if ($('.slotfocus').is(':empty')){
   					//do something
-					$('#todayBoard').animate({
-							width: "30%",
-							float: "left",	
+					$('#frontline').animate({
+							marginTop: "0px",	
 							}, {duration:1500,queue:false});
-					$('#todayinfos').animate({
-							margin:"280px auto auto",
+					$('#carousel').animate({
+							margin:"auto",
 							}, {duration:1500,queue:false});	
-					$('#weekchart').animate({
-							width: "35%",
-							float: "left",	
-							}, {duration:1500,queue:false});
 					$('.slotfocus').animate({
-							width: "32.5%",
-							float:"left",	
+							width: "80%",
+							height:"200px",
+							border:"inset",
+							borderWidth:"0.5em",
+							borderColor:"#CCCCCC",
 							}, {duration:1500,queue:false});
 										
   					}
@@ -371,6 +376,7 @@ function makeSlotPieChart(slot){
 			//$('.slotfocus').append($('#'+slot+"-subframe"));
 			appendTimeInfoTable(slot);
 			
+			loadTimelineofProjects(data[0].slot,data[0].projects);	
 			});
 		
 	});
@@ -381,26 +387,21 @@ function makeSlotPieChart(slot){
 
 function loadTimelineofProjects(slot,projects){
 	
-	$('.slotfocus .columnchart').empty();
+	$('.columnchart').remove();
 	$('.slotfocus').append('<div id='+slot + '-linechart'+' class="columnchart"></div>');
 	$.get('slotResults/'+slot,function(data){
 		
 		data = jQuery.parseJSON(data);
-		console.log(data);
-		console.log(projects);
 		var temp;
 		results = [];
 		for (var d in projects){
 			var x = projects[d];
 				for (var p in data[x]){
-					console.log(data[x][p]);
 					for (var set in data[x][p]){
-						if(data[x][p][set]["started"]){
 						startdate = data[x][p][set]["started"].split('T')[0];
 						enddate = data[x][p][set]["completed"].split('T')[0];
 						starttime = data[x][p][set]["started"].split('T')[1];
-						endtime = data[x][p][set]["completed"].split('T')[1];
-						
+						endtime = data[x][p][set]["completed"].split('T')[1];	
 						temp = [x,set,new Date(startdate.split('-')[0],startdate.split('-')[1],startdate.split('-')[2],
 									 starttime.split(':')[0],starttime.split(':')[1],starttime.split(':')[2]),
 								new Date(enddate.split('-')[0],enddate.split('-')[1],enddate.split('-')[2],
@@ -408,17 +409,10 @@ function loadTimelineofProjects(slot,projects){
 
 						results.push(temp);
 						
-						}
-						else{
-						temp = [x,set,new Date(0,0,0,0,0,0),
-								new Date(0,0,0,0,0,0)];
-
-						results.push(temp);
-
-						}
 					}
 				}
 		}
+		
 					
 
 		google.load("visualization", "1", {packages:["corechart"],callback: drawProjectsChart});
@@ -639,6 +633,16 @@ $(document).ready(function(){
 		google.load("visualization", "1.0", {packages:["corechart"], callback: makeWeekLineChart});
 		//	show all the slots building
 		google.load("visualization", "1.0", {packages:["corechart"], callback: makeTodaySlotTimesChart});
+
+		$(".round-button").click(function(){
+			$.get('todayStats/',{},function(data){
+				$('.slidee').empty()
+				data = jQuery.parseJSON(data);		
+				displayMoreInfo(data[0].all);
+				messWithCoverflow();
+			});
+						
+		});
 
 		});
 

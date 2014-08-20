@@ -203,14 +203,15 @@ def slotResult(slot_name):
 		data[n] = {}
 		for p in platforms:
 			data[n][p]={}
-			data[n][p]['tests-result']={}
-			data[n][p]['build-result']={}
+			data[n][p]['tests-result']={"started":today+"T"+"00:00:00","completed":today+"T"+"00:00:00"}
+			data[n][p]['build-result']={"started":today+"T"+"00:00:00","completed":today+"T"+"00:00:00"}
 		
 		
         for r in results:
 		data[r.project][r.platform]['tests-result']={"started":r.started,"completed":r.completed}
 		data[r.project][r.platform]['build-result']={"started":r.started,"completed":r.completed}
-		
+
+			
 	
         data = json.dumps(data)
 	return data
@@ -258,7 +259,7 @@ def slotsResults(slot_name):
         unfinished = list(set(resultsdict['unfinished'])-set(resultsdict['unstarted']))
 
         data=[]
-        data.append({"total":len(results),"slot":slot_name,"platforms":platforms,"dopedict":dopedict,"unstarted":unstarted,"unfinished":unfinished,"finished":finished})
+        data.append({"total":len(results),"projects":names,"slot":slot_name,"platforms":platforms,"dopedict":dopedict,"unstarted":unstarted,"unfinished":unfinished,"finished":finished})
 
         data = json.dumps(data)
 

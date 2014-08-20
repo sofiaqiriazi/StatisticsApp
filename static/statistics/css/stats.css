@@ -55,11 +55,15 @@
 
 .slotfocus{
 	width:0%;
-	height:400px;
-	position: relative;
-	float: left;
-	margin-left: 0px;
-	margin-right:0px;
+	height:0%;
+	padding:20px;
+	margin: auto;
+	border: 0px solid #3366CC;
+	border-bottom:none;	
+}
+
+.slotfocus:hover {
+	border: none;	
 }
 
 #weekchart{
@@ -79,18 +83,70 @@
 	margin-top:35px;
 }
 
-
-
 .columnchart{
-	width: 400px;
+	float:left;
+	width: 40%;
 	position:relative;
 	margin: auto;
 }
 
+.columnchart div{
+	margin:auto;
+}
+
+
 .focuschart{
-	width:150;
+	width:20%;
 	float:left;
 	position:relative;
 }
 
+.focuschart div{
+	margin:auto;
+}
 
+.round-button {
+	-moz-box-shadow:inset 0px 1px 0px 0px #97c4fe;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #97c4fe;
+	box-shadow:inset 0px 1px 0px 0px #97c4fe;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #3d94f6), color-stop(1, #1e62d0) );
+	background:-moz-linear-gradient( center top, #3d94f6 5%, #1e62d0 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#3d94f6', endColorstr='#1e62d0');
+	background-color:#3d94f6;
+	-webkit-border-top-left-radius:0px;
+	-moz-border-radius-topleft:0px;
+	border-top-left-radius:0px;
+	-webkit-border-top-right-radius:0px;
+	-moz-border-radius-topright:0px;
+	border-top-right-radius:0px;
+	-webkit-border-bottom-right-radius:0px;
+	-moz-border-radius-bottomright:0px;
+	border-bottom-right-radius:0px;
+	-webkit-border-bottom-left-radius:0px;
+	-moz-border-radius-bottomleft:0px;
+	border-bottom-left-radius:0px;
+	text-indent:0;
+	border:1px solid #337fed;
+	color:#ffffff;
+	font-family:Verdana;
+	font-size:15px;
+	font-weight:bold;
+	font-style:normal;
+	height:31px;
+	line-height:31px;
+	width:80px;
+	text-decoration:none;
+	text-align:center;
+	text-shadow:1px 1px 0px #1570cd;
+	margin:auto;
+}
+.round-button:hover {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #1e62d0), color-stop(1, #3d94f6) );
+	background:-moz-linear-gradient( center top, #1e62d0 5%, #3d94f6 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#1e62d0', endColorstr='#3d94f6');
+	background-color:#1e62d0;
+}.round-button:active {
+	position:relative;
+	top:1px;
+}
+/* This button was generated using CSSButtonGenerator.com */
