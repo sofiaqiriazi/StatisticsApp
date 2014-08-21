@@ -335,24 +335,24 @@ def projectTimes(slot_name,platform_name):
                 for n in data["projects"]:
                         data["build"][n]={}
                         data["tests"][n]={}
-                        data["build"][n]['start_build'] = '00:00:00'
-                        data["build"][n]['complet_build'] = '00:00:00'
-                        data["tests"][n]['start_build'] = '00:00:00'
-                        data["tests"][n]['complet_build'] = '00:00:00'
+                        data["build"][n]['start_build'] = today+'T'+'00:00:00'
+                        data["build"][n]['complet_build'] = today+'T'+'00:00:00'
+                        data["tests"][n]['start_build'] = today+'T'+'00:00:00'
+                        data["tests"][n]['complet_build'] = today+'T'+'00:00:00'
 
 
 
 
         build_times = ProjectTimes.view('statistics/projectTimes',key=[slot_name,platform_name,today,"build-result"])
         for t in build_times:
-                data["build"][t.project]['start_build'] = t.started
-                data["build"][t.project]['complet_build'] = t.completed
+                data["build"][t.project]['start_build'] = today+'T'+t.started
+                data["build"][t.project]['complet_build'] = today+'T'+t.completed
 
         tests_times = ProjectTimes.view('statistics/projectTimes',key=[slot_name,platform_name,today,"tests-result"])
 
         for t in tests_times:
-                data["tests"][t.project]['start_build'] = t.started
-                data["tests"][t.project]['complet_build'] = t.completed
+                data["tests"][t.project]['start_build'] = today+'T'+t.started
+                data["tests"][t.project]['complet_build'] = today+'T'+t.completed
 
         data = json.dumps(data)
 
