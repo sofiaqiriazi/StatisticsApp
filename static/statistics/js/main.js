@@ -19,7 +19,6 @@ function loadSlideshow(){
 	var $frame = $('#frame');
 	var $wrap = $frame.parent();
 	$frame.sly('destroy');
-	
 	$frame.sly({
 		horizontal: 1,
 		itemNav: 'forceCentered',
@@ -40,21 +39,19 @@ function loadSlideshow(){
 		// // Buttons
 		prev: $(document).find('.prev'),
 		next: $(document).find('.next'),
-	});
+	},
+	{
+		active: function(e, i){
+			$('.slotfocus').empty();
+			var sha = ($('.wrap').find('.active').children().children()[0].id);
+			console.log(e+" and "+ sha);
+			clicktheslot(sha);
+		}
+	}
+);
 
 	$wrap.show();
 	$frame.sly('reload');
-
-	$(document).find('.prev').on('click',function () {
-		var sha = ($wrap.find('.active').children().children()[0].id);
-		$('#'+sha).click();
-	});
-
-	$(document).find('.next').on('click',function () {
-		var sha = ($wrap.find('.active').children().children()[0].id);
-		$('#'+sha).click();
-	});	
-
 	return;	
 }
 
@@ -163,7 +160,7 @@ function LoadProgressOfProjects(id){
 //create Slideshow inside Focus window for slot
 function appendTimeInfoTable(slot){
 
-	$(".comparison").empty();
+	$('.subwrap').remove();
 	$('.slotfocus').append('<div class="subwrap">'+
 					'<div class="subscrollbar">'+
 						'<div class="subhandle">'+
@@ -218,7 +215,7 @@ function appendTimeInfoTable(slot){
 			table.append(row);
 
 			row = $('<tr><td><div id ='+ slot + platform + "progressbar" +
-				' style="height:15px; width:100px;"></div></td></tr>');		
+				'></div></td></tr>');		
 			table.append(row);
 
 			var listel = $('<li></li>');
@@ -288,16 +285,24 @@ function makeSlotPieChart(slot){
 		options['title'] = data[0].slot;
 		options['width'] = 300;
 		options['height'] = 300;
-		options['tooltip'] = { trigger: 'selection' };
-		options['pieSliceText']='label';
+		options['pieSliceText']='value';
 		options['enableInteractivity'] = false;
 
 		var chartdiv = $('#'+slot)
 		var chart = new google.visualization.PieChart(document.getElementById(slot));
 		chart.draw(stats, options);
 
-		$('#'+slot).click(function(){
+	});
+
+}
+
+
+function clicktheslot(slot){
+	$.get('slotsResults/'+slot,function(data){
 			//if there is not a slot on which there is focus
+		data = jQuery.parseJSON(data);
+		
+			$('.slotfocus').empty();
 			if ($('.slotfocus').is(':empty')){
 				//do something
 				$('#frontline').animate({
@@ -312,15 +317,33 @@ function makeSlotPieChart(slot){
 					border:"inset",
 					borderWidth:"0.5em",
 					borderColor:"#CCCCCC",
-				}, {duration:1500,queue:false});
-
+				}, {duration:1500,queue:false}).promise().done(function(){
+					$('.subframe').sly('reload');
+				});
+				
 			}
 					
-			$('.slotfocus').empty();
 			$newslotchart =  '<div id='+slot+"-focuschart"+' class="focuschart"></div>';
 			$('.slotfocus').append($newslotchart);
 
+
+
+			var finished = data[0].finished;
+			var unfinished = data[0].unfinished;
+			var unstarted = data[0].unstarted;
+	
+			var stats = new google.visualization.DataTable();
+			stats.addColumn('string', 'Topping');
+			stats.addColumn('number', 'Slices');
+			stats.addRows([
+				['Finished', finished.length],
+				['Unfinished', unfinished.length],
+				['Unstarted', unstarted.length],
+				]);
+
 			var chart = new google.visualization.PieChart(document.getElementById(slot+"-focuschart"));
+			var options = {};
+			options['title'] = data[0].slot;
 			options['enableInteractivity'] = true;
 			options['width'] = 150;
 			options['height'] = 200;
@@ -328,7 +351,9 @@ function makeSlotPieChart(slot){
 						1: {offset: 0.1},
 						2: {offset: 0.2},
 						};
-
+			options['tooltip'] = { trigger: 'selection' };
+			options['pieSliceText']='value';
+	
 			chart.setAction({
 				id: 'sample',
 				text: 'LOAD PROJECTS',
@@ -353,11 +378,10 @@ function makeSlotPieChart(slot){
 			chart.draw(stats, options);
 			appendTimeInfoTable(slot);
 			loadTimelinebyProjects(slot,data[0].projects);	
-		});
-
+			$('.slotfocus').show();
 	});
-
 }
+
 
 function loadTimelinebyProjects(slot,projects){
 
@@ -461,7 +485,7 @@ function makeWeekLineChart(){
 		var options = {
 			title: 'Week Statistics',
 			pointSize: 5,
-			width: 600,
+			width: 800,
 			height: 400,
 		};
 
@@ -483,66 +507,75 @@ function loadTodayStatistics(){
 				]);
 
 		var options = {};
-		options['title'] = 'TOTAL OF SLOTS : '+ data[0].total;
-		options['label'] = 'none';
-		options['pieSliceText']='label';
-		options['width'] = 400;
-		options['height'] = 400;
-		options['tooltip'] = { trigger: 'selection' };
-		options['slices'] = {   0: {offset: 0.2},
+		//options['legend'] = 'none';
+		options['title'] = "Today's total is "+data[0].total +" slots";
+		options['titleTextStyle'] = {   color:'#4D4D4D',
+						fontSize: 18,
+						bold: 1};
+		options['pieSliceTextStyle'] = {   color:'#F5F5F5',
+						fontSize: 16,
+						bold: 1};
+		options['pieSliceText']='value';
+		options['legend'] = {position:'labeled'};
+		options['width'] = 500;
+		options['height'] = 300;
+		options['slices'] = {   0: {offset: 0.1},
 					1: {offset: 0.1},
 					2: {offset: 0.1},
 				    };
 
-		var now = new Date();
-		domain = $('#todayinfos');	
-		var table = $('<table id=timeinfos></table>');
-		var row;
 
-		row = $('<tr></tr>').addClass('bar').text('Current Time:'+ ((now.toTimeString()).split(" "))[0]);
-		row.append('<td><img src="static/statistics/img/Clock.png"  style="width:40%;" /></td>');
-		table.append(row);
-			
-		row = $('<tr></tr>').addClass('bar').text('Starting Time:'+ TranslateToTime(data[0].todaymin)); 
-		row.append('<td><img src="static/statistics/img/Clock.png"  style="width:40%;" /></td>');
-		table.append(row); 
-		
-		row = $('<tr></tr>').addClass('bar').text('Ending Time:'+ TranslateToTime(data[0].avgcompletion)); 
-		row.append('<td><img src="static/statistics/img/Clock.png"  style="width:40%;" /></td>');
-		table.append(row);
+		var now = new Date();
+		var currenttime = ((now.toTimeString()).split(" "))[0];
+		var startingtime = TranslateToTime(data[0].todaymin);
+		var timetocomplet = TranslateToTime(data[0].avgcompletion);
+
 		InitializeProgressbar();			
 		
-		domain.prepend(table);
 		loadPieCharts(data[0].all);
 		loadSlideshow();
 
 		//create piechart
 		var chart = new google.visualization.PieChart(document.getElementById('piechart'));
 
-		chart.setAction({
-			id: 'sample',                  // An id is mandatory for all actions.
-			text: 'LOAD SLOTS',       // The text displayed in the tooltip.
-			action: function() {           // When clicked, the following runs.
-				selection = chart.getSelection();
-				switch (selection[0].row) {
-					case 0:	$('#frame ul').empty();
-						loadPieCharts(data[0].listofcompleted);
-						loadSlideshow();
-						break;
-					case 1: $('#frame ul').empty();
-						loadPieCharts(data[0].listofunfinished);
-						loadSlideshow();
-						break;
-					case 2: $('#frame ul').empty();
-						loadPieCharts(data[0].listofunstarted);
-						loadSlideshow();
-						break;
-				}
-
-			}
-		});
-
 		chart.draw(stats, options);
+		google.visualization.events.addListener(chart, 'onmouseover', PieMouseOver);
+		google.visualization.events.addListener(chart, 'onmouseout', PieMouseOut);
+
+	function PieMouseOver(e) {
+    		chart.setSelection([e]);
+			$('.slotfocus').slideUp('slow');
+			$('.slotfocus').empty();
+			$('.slotfocus').hide();
+			$('#frame ul').empty();
+
+		if(e.row==0){
+		       	loadPieCharts(data[0].listofcompleted);
+                	loadSlideshow();
+			$('#label').text("Finished");
+			$('#label').css("background-color","#3366cc");
+	
+		}
+    		else if(e.row==1){
+			loadPieCharts(data[0].listofunfinished);
+                	loadSlideshow();
+			$('#label').text("Unfinished");
+			$('#label').css("background-color","#dc3912");
+	
+		}
+   		else if(e.row==2){
+                	loadPieCharts(data[0].listofunstarted);
+                	loadSlideshow();
+			$('#label').text("Unstarted");
+			$('#label').css("background-color","#ff9900");
+	
+		}
+  	}
+
+	function PieMouseOut(e) {
+    		chart.setSelection([{'row': null, 'column': null}]);
+  	}
+
 
 	function InitializeProgressbar(){
 		var secsnow = now.getHours()*3600 + now.getMinutes()*60+now.getSeconds();
@@ -566,9 +599,30 @@ function loadTodayStatistics(){
 		});
 
 		($("#progressbar").find(".ui-progressbar-value")).css({
-			"background": '#3366CC'
+			"background": '#109618'
 		});
+		
+		$("#textinbar").text(currenttime);
+		$("#progressstart").append(startingtime);
+		
+		$("#progressend").append(timetocomplet);
+		
 	}
+
+				
+		$(".round-button").hover(
+			function(){
+				$(this).text(data[0].total+' Slots');
+			},
+		   	function() {
+        			$(this).text('View All');
+    		});
+
+
+     });
+
+
+}
 
 	$(function () {
 		var $element = $('#progressbar');
@@ -578,16 +632,17 @@ function loadTodayStatistics(){
 					$element.fadeIn(500)
 					});
 				});
-			}, 500);
+			}, 500);	
+
 	});
-     });
-}
+
 
 $(document).ready(function(){
 
 	//hide the slideshow div
 	$('.wrap').hide();
 
+	$('.slotfocus').hide();
 	//make todays Pie Chart and slideshow of slots
 	google.load("visualization", "1.0", {packages:["corechart"], callback: loadTodayStatistics});
 
@@ -597,10 +652,14 @@ $(document).ready(function(){
 	//view all button function on click
 	$(".round-button").click(function(){
 		$.get('todayStats/',{},function(data){
-			$('.slidee').empty()
+			$('.slidee').empty();
 			data = jQuery.parseJSON(data);		
 			loadPieCharts(data[0].all);
+			$('.slotfocus').hide();
+			$('.slotfocus').empty();
 			loadSlideshow();
+                        $('#label').text("All the slots");
+                        $('#label').css("background-color","#4D4D4D");
 		});
 
 	});
@@ -617,11 +676,6 @@ $(document).keydown(function(e) {
 
 	case 39: // right
 		$('.next').click();
-		break;
-
-	case 13: //enter
-		var sha = $('.wrap').find('.active').children().children()[0].id;	
-		$('#'+sha).click();
 		break;
 
 	default: return; // exit this handler for other keys

@@ -5,17 +5,25 @@
 	<div id="todayBoard" >
 
 		<div  id="piechart"></div>
-		<div id="todayTable" >
-			<div id="todayinfos" >
-				<div id ="progressbar" ></div>
+
+		<div class = "progress" style="width:100%; height:80px; padding-top:20px; float:left;">
+			<div id="progressstart" style="width:20%; float:left; ">
+				<img src="static/statistics/img/Clock.png"  style="width:10%;" />
+			</div>
+			<div id ="progressbar" ><div id="textinbar"></div></div>
+			<div id ="progressend" style="width:20%; float:left;">
+				<img src="static/statistics/img/Clock.png"  style="width:10%;" />
 			</div>
 		</div>
+
 	</div>
 
 	<div id="weekchart"></div>
 </div>
+
 <div class ="slotfocus" ></div>
 
+<div><h2 id="label">All the slots</h2></div>
 <div id="carousel">
 	<div style="float:left;" class="controls center">
 		<div class="btn prev disabled" disabled="">
@@ -34,7 +42,7 @@
 
 
 		<div id="frame" class="frame" style="overflow: hidden; ">
-			<ul class="slidee" style="width: 6840px;"></ul>
+			<ul class="slidee"></ul>
 		</div>
 
 	</div>
