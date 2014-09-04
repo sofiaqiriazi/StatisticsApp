@@ -5,13 +5,17 @@
 	<div id="todayBoard" >
 
 		<div  id="piechart"></div>
+		<div id="viewall">
+			<div style="margin:auto;" class="round-button">View All</div>
+		</div>	
 
-		<div class = "progress" style="width:100%; height:80px; padding-top:20px; float:left;">
-			<div id="progressstart" style="width:20%; float:left; ">
+
+		<div class = "progress" id="progress">
+			<div id="progressstart">
 				<img src="static/statistics/img/Clock.png"  style="width:10%;" />
 			</div>
 			<div id ="progressbar" ><div id="textinbar"></div></div>
-			<div id ="progressend" style="width:20%; float:left;">
+			<div id ="progressend">
 				<img src="static/statistics/img/Clock.png"  style="width:10%;" />
 			</div>
 		</div>
@@ -25,7 +29,7 @@
 
 <div><h2 id="label">All the slots</h2></div>
 <div id="carousel">
-	<div style="float:left;" class="controls center">
+	<div class="controls center">
 		<div class="btn prev disabled" disabled="">
 			<i class="icon-chevron-left">
 				<img class="arrowmove" src="../../static/statistics/img/arrow-prev.png" alt="prev" />
@@ -35,7 +39,7 @@
 
 	<div class="wrap" >
 		<div class="scrollbar">
-			<div class="handle" style=" width: 190px;">
+			<div class="handle">
 				<div class="mousearea"></div>
 			</div>
 		</div>
@@ -47,7 +51,7 @@
 
 	</div>
 
-	<div style ="float:left;" class="controls center">
+	<div class="controls center">
 		<div class="btn next">
 			<i class="icon-chevron-right">
 				<img class="arrowmove" src="../../static/statistics/img/arrow-next.png" alt="next" />
@@ -55,8 +59,4 @@
 		</div>
 	</div>
 </div>
-<div style="width:100%;">
-	<div style="margin:auto;" class="round-button">View All</div>
-</div>	
-
 {% endblock content %}

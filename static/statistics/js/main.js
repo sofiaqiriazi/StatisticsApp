@@ -368,6 +368,7 @@ function clicktheslot(slot){
 						loadTimelinebyProjects(data[0].slot,data[0].unfinished);
 						break;
 					case 2:
+						console.log(data[0].unstarted);
 						loadTimelinebyProjects(data[0].slot,data[0].unstarted);
 						break;
 					}
@@ -391,7 +392,7 @@ function loadTimelinebyProjects(slot,projects){
 	$.get('slotResults/'+slot,function(data){
 
 		data = jQuery.parseJSON(data);
-
+		console.log("UNSTARTED");
 		var results = [];
 		for (var d in projects){
 			var x = projects[d];
@@ -409,6 +410,7 @@ function loadTimelinebyProjects(slot,projects){
 
 					results.push(temp);
 
+					console.log(temp);
 				}
 			}
 		}
@@ -429,7 +431,6 @@ function loadTimelinebyProjects(slot,projects){
 			var options={
 				width:400,	
 			};
-
 			chart.draw(dataTable,options);
 		}
 	});

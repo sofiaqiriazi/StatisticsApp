@@ -208,11 +208,9 @@ def slotResult(slot_name):
 		
 		
         for r in results:
-		data[r.project][r.platform]['tests-result']={"started":r.started,"completed":r.completed}
-		data[r.project][r.platform]['build-result']={"started":r.started,"completed":r.completed}
+		data[r.project][r.platform][r.set]={"started":r.started,"completed":r.completed}
 
 			
-	
         data = json.dumps(data)
 	return data
 
@@ -260,7 +258,6 @@ def slotsResults(slot_name):
 
         data=[]
         data.append({"total":len(results),"projects":names,"slot":slot_name,"platforms":platforms,"dopedict":dopedict,"unstarted":unstarted,"unfinished":unfinished,"finished":finished})
-
         data = json.dumps(data)
 
         return data
@@ -314,7 +311,6 @@ def slotTimeInfo(slot_name):
                 data[s.slot][s.platform]['avgcompletion']-=getSec(s.time) 
                 data[s.slot][s.platform]['avgcompletion']/=2
 	
-         
 
          
         data = json.dumps(data);         

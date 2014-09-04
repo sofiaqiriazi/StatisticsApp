@@ -1,27 +1,6 @@
-/* CSS for the Nightlies Release Dashboard */
+/* CSS for the base Dashboard */
 body {
 	padding: 0;
-}
-
-#viewall{
-	font-size: 120%;	
-	padding: 3px;
-}
-#confirm-build-info.*{
-	text-align:center;
-	
-}
-
-#dialog-confirm{
-	text-align: center;
-}
-
-.rebuild-button{
-	font-size: 110%;
-	padding-bottom:0px;
-	padding-left:2px;
-	padding-right:2px;
-	
 }
 
 h4 {
