@@ -625,19 +625,6 @@ function loadTodayStatistics(){
 
 }
 
-	$(function () {
-		var $element = $('#progressbar');
-		setInterval(function () {
-			$element.fadeIn(500, function () {
-				$element.fadeOut(500, function () {
-					$element.fadeIn(500)
-					});
-				});
-			}, 500);	
-
-	});
-
-
 $(document).ready(function(){
 
 	//hide the slideshow div
