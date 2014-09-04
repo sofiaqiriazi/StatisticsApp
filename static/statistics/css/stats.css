@@ -6,10 +6,12 @@
 
 body {
     -moz-tab-size: 4;
+    font-family: sans-serif,serif;
     background: none repeat scroll 0 0 #F5F5F5;
     font-size: 1em;
     line-height: 1.6;
 }
+
 html, button, input, select, textarea {
     color: #666666;
 }
@@ -20,10 +22,10 @@ a {
 a:hover {
     text-decoration: underline;
 }
-h1, h2, h3, h4, h5, h6 {
-    font-family: Novecento,sans-serif;
-}
 
+#banner h1{
+	font-family: sans-serif,serif;
+}
 #label{
     margin:auto;
     width: 80%;
@@ -57,6 +59,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #todayBoard{
+	background-color:#EEEEEE;
+	opacity:0.8;
 	margin:auto;
 	position:relative;
 	float:left;
@@ -76,15 +80,20 @@ h1, h2, h3, h4, h5, h6 {
 
 #viewall{
 	width:20%;
+	margin: 20% auto auto;
 	float:right;
 }
 
 #progress{
-	width:100%;
-	height:80px;
-	padding-top:20px;
-	float:left;
+    color: #336699;
+    float: left;
+    font-weight: bold;
+    height: 80px;
+    letter-spacing: 0.2em;
+    padding-top: 20px;
+    width: 100%;
 }
+
 
 #progressstart{
 	width:20%;
@@ -129,16 +138,13 @@ h1, h2, h3, h4, h5, h6 {
 	height:0%;
 	padding:20px;
 	margin: auto;
-	border: 0px solid #3366CC;
 	border-bottom:none;	
 	margin-bottom: 2px;
 }
 
-.slotfocus:hover {
-	border: none;	
-}
-
 #weekchart{
+	background-color:#EEEEEE;
+	opacity: 0.8;
 	float:left;
 	position:relative;
 	width: 60%;
@@ -149,11 +155,9 @@ h1, h2, h3, h4, h5, h6 {
 
 #weekchart div {
 	margin:auto;
+	margin-top: 5px;
 }
 
-#weekchart div {
-	margin-top:35px;
-}
 
 .columnchart{
 	float:left;

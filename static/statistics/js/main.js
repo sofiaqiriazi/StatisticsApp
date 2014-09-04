@@ -282,8 +282,9 @@ function makeSlotPieChart(slot){
 				]);
 
 		var options = {};
+
+		options['backgroundColor'] = '#CCCCCC';
 		options['title'] = data[0].slot;
-		options['width'] = 300;
 		options['height'] = 300;
 		options['pieSliceText']='value';
 		options['enableInteractivity'] = false;
@@ -507,8 +508,7 @@ function loadTodayStatistics(){
 				['Unstarted', data[0].unstarted],
 				]);
 
-		var options = {};
-		//options['legend'] = 'none';
+		var options = {backgroundColor: '#EEEEEE'};
 		options['title'] = "Today's total is "+data[0].total +" slots";
 		options['titleTextStyle'] = {   color:'#4D4D4D',
 						fontSize: 18,
@@ -600,7 +600,7 @@ function loadTodayStatistics(){
 		});
 
 		($("#progressbar").find(".ui-progressbar-value")).css({
-			"background": '#109618'
+			"background": '#85E085'
 		});
 		
 		$("#textinbar").text(currenttime);
