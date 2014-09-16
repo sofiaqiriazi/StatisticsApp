@@ -124,7 +124,7 @@ a:hover {
 #progressbar{
 	float:left;
 	height:30px;
-	width:59%;
+	width:50%;
 	margin:auto;
     text-align: center;
     overflow: hidden;
