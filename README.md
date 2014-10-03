@@ -4,9 +4,9 @@ The web application is focusing on the today's statistics of the LHCb Nightly Bu
 There is also a timeline for comparison of the today's progress with the last six days.
 The Pie chart splits in three main categories:
 
-1.Unstarted Slots - slots that don't yet have a job start inside the database.
-2.Unfinished Slots - slots that don't yet have a job end inside the database.
-3.Completed Slots - slots that have a job start and job end inside the database.
+1. Unstarted Slots - slots that don't yet have a job start inside the database.
+2. Unfinished Slots - slots that don't yet have a job end inside the database.
+3. Completed Slots - slots that have a job start and job end inside the database.
 
 The bottom part of the web page is actually a carousel.
 The upper half part focuses on the first slot inside the slideshow.
@@ -17,17 +17,17 @@ Each click on the page triggers a reload so the latest information that was adde
 
 ## Run application locally
 
-1.Install Flask [http://flask.pocoo.org/docs/0.10/installation/](http://flask.pocoo.org/docs/0.10/installation/)
-2.Follow the instuctions to get couchdbkit [http://couchdbkit.org/download.html](http://couchdbkit.org/download.html)
-3.Clone this repository.
+1. Install Flask [http://flask.pocoo.org/docs/0.10/installation/](http://flask.pocoo.org/docs/0.10/installation/)
+2. Follow the instuctions to get couchdbkit [http://couchdbkit.org/download.html](http://couchdbkit.org/download.html)
+3. Clone this repository.
 ```sh
 $ git clone https://github.com/sofiaqiriazi/StatisticsApp.git
 ```
-4.Move to directory.
+4. Move to directory.
 ```sh
-$ cd StatisticsApp
+$  cd StatisticsApp
 ```
-5.Run the application.
+5. Run the application.
 ```sh
 python statistics.py
 ````
